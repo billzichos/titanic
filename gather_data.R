@@ -1,9 +1,25 @@
-trnUrl <- "https://www.kaggle.com/c/titanic/download/train.csv"
-tstUrl <- "https://www.kaggle.com/c/titanic/download/test.csv"
+wd <- "~/GitHub/Titanic-Machine-Learning-From-Disaster"
 
-wd <- "C:\\Users\\Bill\\Documents\\GitHub\\Titanic-Machine-Learning-From-Disaster"
+setwd(wd)
 
-setwd <- "C:\\Users\\Bill\\Documents\\GitHub\\Titanic-Machine-Learning-From-Disaster"
+# The following files are provided
+#   - train.csv
+#   - gendermodel.csv
+#   - genderclassmodel.csv
+#   - test.csv
+#   - gendermodel.py
+#   - genderclassmodel.py
+#   - myfirstforest.py
+
+source("~/GitHub/Get-Raw-Data/download.R")
+downloadKaggle("titanic","train.csv")
+downloadKaggle("titanic","gendermodel.csv")
+downloadKaggle("titanic","genderclassmodel.csv")
+downloadKaggle("titanic","test.csv")
+downloadKaggle("titanic","gendermodel.py")
+downloadKaggle("titanic","genderclassmodel.py")
+downloadKaggle("titanic","myfirstforest.py")
+
 
 trnFile <- "train.csv"
 tstFile <- "test.csv"
