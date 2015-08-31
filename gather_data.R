@@ -19,10 +19,3 @@ downloadKaggle("titanic","test.csv")
 downloadKaggle("titanic","gendermodel.py")
 downloadKaggle("titanic","genderclassmodel.py")
 downloadKaggle("titanic","myfirstforest.py")
-
-datalist <- list(
-        train=read.csv(
-                paste(wd,"\\",trnFile, sep=""), header=TRUE, as.is=TRUE), 
-        test=read.csv(
-                paste(wd,"\\",tstFile, sep=""), header=TRUE, as.is=TRUE)
-        )
