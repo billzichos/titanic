@@ -21,11 +21,25 @@ df$Pclass <- factor(df$Pclass, ordered=FALSE)
 df$Sex <- as.factor(df$Sex, ordered = FALSE)
 
 # impute Fare using the median fare price.
-df$Fare[which(is.na(df$Fare))] <- median(df$Fare, na.rm=TRUE)
+df$Fare[is.na(df$Fare)] <- median(df$Fare, na.rm=TRUE)
 
 # impute Embarked by marking all NULLS as originating in Southampton
 df$Embarked[which(df$Embarked=="")] <- "S"
 df$Embarked <- as.factor(df$Embarked)
+
+# extract cabin number from cabin
+df$Cabin <- as.character(df$Cabin)
+df$CabinNum <- sapply(df$Cabin, function(x) strsplit(x, '[A-Z]')[[1]][2])
+df$CabinNum <- as.numeric(df$CabinNum)
+
+# classify the cabins into 1 of 3 areas based on cabin number
+df$CabinPos[df$CabinNum<50] <- "Forward"
+df$CabinPos[df$CabinNum>=50 & df$CabinNum<100] <- "Middle"
+df$CabinPos[df$CabinNum>=1000] <- "Aft"
+df$CabinPos <- as.factor(df$CabinPos)
+
+# derive a family size feature
+df$FamilySize <- df$SibSp + df$Parch + 1
 
 # Name
 library(reshape)
@@ -72,3 +86,12 @@ df$titleRollup2 <-
                                                                                                                            ifelse(df$title=="Col", "MILITARY",
                                                                                                                                   ifelse(df$title=="Capt", "MILITARY",
                                                                                                                                          ifelse(df$title=="Jonkheer", "ROYALTY", "Unknown")))))))))))))))))))
+
+#impute Age
+        # impute Age with -1
+        #df$Age[is.na(df$Age)] <- -1
+
+        #impute Age based on decision tree
+        library("rpart")
+        predicted.age <- rpart(Age ~ Pclass + Sex + SibSp + Parch + Fare + Embarked + title + FamilySize, data = df[!is.na(df$Age),], method = "anova")
+        df$Age[is.na(df$Age)] <- predict(predicted.age, df[is.na(df$Age),])
